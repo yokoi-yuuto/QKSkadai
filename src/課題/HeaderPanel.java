@@ -1,4 +1,4 @@
-package stepCounter;
+package 課題;
 
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
@@ -18,12 +18,12 @@ import javax.swing.TransferHandler;
 public class HeaderPanel extends JPanel {
 	/**テキストフィールドの文字を保持*/
 	private JTextField textField;
-    private JButton actionBtn;
-    private JButton clearBtn;
-    /**
-     * 
-     */
-    private UnderPanel underPanel;
+	private JButton actionBtn;
+	private JButton clearBtn;
+	/**
+	 * 
+	 */
+	private UnderPanel underPanel;
 
 	/**
 	 * 画面上部パネル
@@ -42,36 +42,36 @@ public class HeaderPanel extends JPanel {
 
 		// ドラッグ＆ドロップ機能を設定
 		textField.setTransferHandler(new TransferHandler() {
-		    @Override
-		    public boolean canImport(TransferHandler.TransferSupport support) {
-		        // ファイルかディレクトリを判断
-		        return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
-		    }
+			@Override
+			public boolean canImport(TransferHandler.TransferSupport support) {
+				// ファイルかディレクトリを判断
+				return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+			}
 
-		    @Override
-		    public boolean importData(TransferHandler.TransferSupport support) {
-		        if (!canImport(support)) {
-		            return false;
-		        }
+			@Override
+			public boolean importData(TransferHandler.TransferSupport support) {
+				if (!canImport(support)) {
+					return false;
+				}
 
-		        try {
-		            // ドロップされたファイルリストを取得
-		            Transferable transferable = support.getTransferable();
-		            @SuppressWarnings("unchecked")
+				try {
+					// ドロップされたファイルリストを取得
+					Transferable transferable = support.getTransferable();
+					@SuppressWarnings("unchecked")
 					List<File> files = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 
-		            // 最初のファイルのパスをテキストフィールドに設定
-		            if (files.size() > 0) {
-		                textField.setText(files.get(0).getAbsolutePath());
-		            }
-		            return true;
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		            return false;
-		        }
-		    }
+					// 最初のファイルのパスをテキストフィールドに設定
+					if (files.size() > 0) {
+						textField.setText(files.get(0).getAbsolutePath());
+					}
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
 		});
-		
+
 		//実行ボタン
 		JButton actionBtn = new JButton("実行");
 		//クリアボタン
@@ -82,25 +82,27 @@ public class HeaderPanel extends JPanel {
 		add(actionBtn);
 		add(clearBtn);
 
-		ActionButtonListener listener = new ActionButtonListener(this,underPanel);
+		ActionButtonListener listener = new ActionButtonListener(this, underPanel);
 		actionBtn.addActionListener(listener);
 		clearBtn.addActionListener(listener);
 
 	}
+
 	/**
 	 * テキストテーブルのテキストを受け取る
 	 * @return　テキストフィールドのテキスト
 	 */
 	public String getTextFromField() {
-		
+
 		return textField.getText();
-		
+
 	}
+
 	/**
 	 * テキストフィールドの文字列を削除
 	 */
 	public void clearTextField() {
-	    textField.setText("");
+		textField.setText("");
 	}
-	
+
 }

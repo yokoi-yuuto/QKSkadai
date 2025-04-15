@@ -1,4 +1,4 @@
-package stepCounter;
+package 課題;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import javax.swing.table.TableColumn;
  */
 public class UnderPanel extends JPanel {
 	// 表に表示するデータを定義(最初は空) 
-	Object[][] data = new Object[10][6];
+	Object[][] data = new Object[10][1];
 	// 列の名前を定義
-	String[] columns = { "ファイル名", "タイプ", "実行", "空行", "コメント行", "合計" };
+	String[] columns = { "中身" };
 
 	DefaultTableModel model = new DefaultTableModel(data, columns);
 	
