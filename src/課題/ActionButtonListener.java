@@ -23,7 +23,7 @@ public class ActionButtonListener implements ActionListener {
 	 */
 	private int numberOfAttempts;
 
-	private StepCount stepCount = new StepCount();
+	private XMLAnalysis stepCount = new XMLAnalysis();
 
 	/**
 	 * @param HeaderPanel 
