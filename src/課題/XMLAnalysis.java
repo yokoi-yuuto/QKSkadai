@@ -20,6 +20,8 @@ import org.w3c.dom.NodeList;
 public class XMLAnalysis {
 	// 抽出結果を格納するlist
 	private List<String> lines = new ArrayList<>();
+	// インデントを保持するフィールド
+	private int indentLevel = 0;
 
 	/**
 	 * コンストラクタ
@@ -47,8 +49,13 @@ public class XMLAnalysis {
 
 			// ルートのすべての子ノードを取得する
 			NodeList nodeList = root.getChildNodes();
+			
 			// 子ノードlistを処理する
+			// ルートの下からインデント開始
+			indentLevel++;
 			processNodes(nodeList);
+			// 終了後に戻す
+			 indentLevel--;
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -70,7 +77,8 @@ public class XMLAnalysis {
 	 * @param line 追加する文字列
 	 */
 	public void setLines(String line) {
-		lines.add(line); // listに新しいデータを追加
+		String indent = new String(new char[indentLevel]).replace("\0", "    "); 
+		lines.add(indent + line); // listに新しいデータを追加
 	}
 
 	/**
@@ -110,11 +118,13 @@ public class XMLAnalysis {
 				}
 				// ノードに子ノードが存在する場合、再帰的に処理を行う
 				if (node.hasChildNodes()) {
+					indentLevel++;
 					processNodes(node.getChildNodes());
+					 indentLevel--;
 				}
 				break;
 				
-			// ノードがタグの場合の処理
+			// textノードの場合の処理
 			case Node.TEXT_NODE:
 				// タグの中身を取得して出力
 				String content = node.getTextContent().trim();
