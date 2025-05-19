@@ -81,7 +81,7 @@ public class ActionButtonListener implements ActionListener {
 
 			//取得した文字列がXMLかstr以外のの時は警告ダイアログを表示
 			String name = file.getName().toLowerCase();
-			if (!(name.endsWith(".stl_bk250407") || name.endsWith(".stl"))) {
+			if (!(name.endsWith(".XML") || name.endsWith(".stl"))) {
 				WarningDialog.show(headerPanel, "対応していないファイル形式です（.xml または .stl のみ対応）");
 				return;
 			}
