@@ -20,7 +20,13 @@ public class UnderPanel extends JPanel {
 	// 列の名前を定義
 	String[] columns = { "中身" };
 
-	DefaultTableModel model = new DefaultTableModel(data, columns);
+	DefaultTableModel model = new DefaultTableModel(data, columns) {
+	    @Override
+	    //入力不可にする。
+	    public boolean isCellEditable(int row, int column) {
+	        return false;
+	    }
+	};
 	
 	private List<Object[]> rowList = new ArrayList<>();
 

@@ -15,6 +15,7 @@ public class XMLReaderFrame extends JFrame{
 	public XMLReaderFrame() {
 		setupFrame();
 		initComponents();
+		setVisible(true);
 	}
 
 	/**
@@ -22,7 +23,6 @@ public class XMLReaderFrame extends JFrame{
 	 */
 	private void setupFrame() {
 		// Frameのステータスを設定
-		setVisible(true);
 		setSize(700, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -32,21 +32,21 @@ public class XMLReaderFrame extends JFrame{
 	 */
 	private void initComponents() {
 		//パネル
-		JPanel mainPanel = new JPanel();
+		JPanel mainPanel = new JPanel(new BorderLayout());
 
 		//レイアウト
 		mainPanel.setLayout(new BorderLayout());
 
-		UnderPanel underPanel = new UnderPanel();
-		underPanel.init();
+		this.underPanel = new UnderPanel();
+		this.underPanel.init();
 
 		//他クラスのパネルを追加
-		HeaderPanel headerPanel = new HeaderPanel(underPanel);
-		headerPanel.init();
+		this.headerPanel = new HeaderPanel(this.underPanel);
+		this.headerPanel.init();
 
 		// mainPanel にパネルを追加
-		mainPanel.add(headerPanel, BorderLayout.NORTH);
-		mainPanel.add(underPanel, BorderLayout.SOUTH);
+		mainPanel.add(this.headerPanel, BorderLayout.NORTH);
+		mainPanel.add(this.underPanel, BorderLayout.CENTER);
 
 		//フレームに追加
 		add(mainPanel);

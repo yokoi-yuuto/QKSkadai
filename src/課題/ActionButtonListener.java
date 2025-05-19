@@ -66,25 +66,38 @@ public class ActionButtonListener implements ActionListener {
 			String filePath = headerPanel.getTextFromField();
 			//ファイルの便利なやつ
 			File file = new File(filePath);
-			//取得した文字列がnullもしくは空文字ではない場合処理を進める
-			if (filePath != null && !filePath.isEmpty()) {
-				//textフィールドに文字列がある場合
-				System.out.println("正しい文字列を選出しました、textフィールドの文字列は「" + filePath + "」です");
-				//ファイルの場合----------------
-					stepCount.calculateLineCounts(filePath);
-					processFile(file);
-			} else {
-				//textフィールドに何もない場合
-				System.out.println("textフィールドに文字がありません、終了します");
 
+			//取得した文字列が空の時は警告ダイアログを表示
+			if (filePath == null || filePath.trim().isEmpty()) {
+				WarningDialog.show(headerPanel, "ファイルを指定してください。");
+				return;
 			}
+
+			//取得した文字列がフォルダの時は警告ダイアログを表示
+			if (file.isDirectory()) {
+				WarningDialog.show(headerPanel, "フォルダではなく、ファイルを指定してください。");
+				return;
+			}
+
+			//取得した文字列がXMLかstr以外のの時は警告ダイアログを表示
+			String name = file.getName().toLowerCase();
+			if (!(name.endsWith(".XML") || name.endsWith(".stl"))) {
+				WarningDialog.show(headerPanel, "対応していないファイル形式です（.xml または .stl のみ対応）");
+				return;
+			}
+
+			//textフィールドに文字列がある場合
+			System.out.println("正しい文字列を選出しました、textフィールドの文字列は「" + filePath + "」です");
+			//ファイルの場合----------------
+			stepCount.calculateLineCounts(filePath);
+			processFile(file);
+
 			//空行を出す(10行-numberOfAttempts)
 			for (int i = 1; i <= 10 - numberOfAttempts; i++) {
 				underPanel.addRow(new Object[] { "" });
 			}
-			//テキストフィールドの初期化
+			//textフィールドの初期化
 			headerPanel.clearTextField();
-			//Totalの初期化
 		} catch (Exception e) {
 			// 例外の詳細を出力 
 			e.printStackTrace();
@@ -114,12 +127,22 @@ public class ActionButtonListener implements ActionListener {
 	 * 表をすべて削除するメソッド
 	 */
 	private void clear() {
-		underPanel.clearTable();
-		//空行を出す
-		for (int i = 1; i <= 10; i++) {
-			underPanel.addRow(new Object[] { "" });
-		}
+		// ★ 確認ダイアログを表示し、ユーザーの選択を取得
+		int result = javax.swing.JOptionPane.showConfirmDialog(
+				headerPanel,
+				"表の内容をクリアしてもよろしいですか？",
+				"確認",
+				javax.swing.JOptionPane.YES_NO_OPTION,
+				javax.swing.JOptionPane.WARNING_MESSAGE);
 
+		//YESを押した場合のみ実行
+		if (result == javax.swing.JOptionPane.YES_OPTION) {
+			underPanel.clearTable();
+			//空行を出す
+			for (int i = 1; i <= 10; i++) {
+				underPanel.addRow(new Object[] { "" });
+			}
+		}
 	}
 
 }

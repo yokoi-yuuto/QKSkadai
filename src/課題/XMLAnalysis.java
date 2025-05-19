@@ -91,12 +91,14 @@ public class XMLAnalysis {
 			//ノードlistからノードを順番に取得
 			Node node = nodeList.item(i);
 
-			// ノードがタグの場合のみ処理
-			if (node.getNodeType() == Node.ELEMENT_NODE) {
+			//ノードの種類で分岐
+			switch (node.getNodeType()) {
+
+			// ノードがタグの場合の処理
+			case Node.ELEMENT_NODE:
 				// タグ名をlistに追加
 				setLines("タグ名: " + node.getNodeName());
-
-				// ノードに属性が存在する場合処理
+				// 属性が存在する場合処理
 				if (node.hasAttributes()) {
 					//ノードから属性listを取得
 					NamedNodeMap attributes = node.getAttributes();
@@ -106,20 +108,26 @@ public class XMLAnalysis {
 						setLines(" 属性: " + attr.getNodeName() + " = " + attr.getNodeValue());
 					}
 				}
-
 				// ノードに子ノードが存在する場合、再帰的に処理を行う
 				if (node.hasChildNodes()) {
 					processNodes(node.getChildNodes());
 				}
-
+				break;
+				
+			// ノードがタグの場合の処理
+			case Node.TEXT_NODE:
 				// タグの中身を取得して出力
 				String content = node.getTextContent().trim();
-
 				//抽出結果が空白じゃない場合処理
 				if (!content.isEmpty()) {
 					//内容をlistに追加
 					setLines(" 内容: " + content);
 				}
+				break;
+				
+			default:
+				//コメントなどは無視
+				break;
 			}
 		}
 	}

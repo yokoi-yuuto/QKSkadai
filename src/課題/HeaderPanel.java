@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
@@ -76,9 +77,23 @@ public class HeaderPanel extends JPanel {
 		JButton actionBtn = new JButton("実行");
 		//クリアボタン
 		JButton clearBtn = new JButton("クリア");
+		//参照ボタン
+		JButton fileSelectBtn = new JButton("参照");
+		
+		fileSelectBtn.addActionListener(e -> {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("XMLファイルを選択");
+			int result = fileChooser.showOpenDialog(this);
 
+			if (result == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = fileChooser.getSelectedFile();
+				textField.setText(selectedFile.getAbsolutePath());
+			}
+		});
+		
 		//パネルに追加
 		add(textField);
+		add(fileSelectBtn);
 		add(actionBtn);
 		add(clearBtn);
 
